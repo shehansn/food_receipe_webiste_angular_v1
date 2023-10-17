@@ -1,0 +1,30 @@
+<!-- {{selectedMeals|json}} -->
+<div *ngIf="selectedMeals.length>0" class="container">
+  <ul>
+    <li *ngFor="let recipe of selectedMeals">
+      <a routerLink="?c={{ recipe.strMeal }}">
+        <img [src]="recipe.strMealThumb" [alt]="recipe.strMeal" />
+        <div class="favourite-section">
+          <div class="short-name">
+            <span >
+            Soup
+            </span>
+          </div>
+
+          <div class="fav-container">
+            <!-- <span class="favorite {{ recipe.favourite ? '' : 'not' }}"> ❤ </span> -->
+            <i class="fa fa-heart "></i>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="name">
+            {{ recipe.strMeal | slice:0:25 }}
+          </div>
+
+        </div>
+      </a>
+    </li>
+  </ul>
+
+</div>

@@ -1,0 +1,15 @@
+<p>recipe works!</p>
+<ul>
+  <li>
+    <a routerLink="/food/{{ recipe.id }}">
+      <img [src]="recipe.strMealThumb" [alt]="recipe.strMeal" />
+      <div class="content">
+        <div class="name">
+          {{ recipe.strMeal }}
+        </div>
+        <span class="favorite {{ recipe.favourite ? '' : 'not' }}"> ❤ </span>
+
+      </div>
+    </a>
+  </li>
+</ul>
