@@ -1,0 +1,9 @@
+<div class="container">
+  <div *ngIf="categories.length>0" >
+    <a *ngFor="let cat of categories.slice(0, 10)" (click)="changeQueryParams(cat.strCategory)" >
+      {{ cat.strCategory }}
+    </a>
+  </div>
+</div>
+
+<!-- {{categories|json}} -->
