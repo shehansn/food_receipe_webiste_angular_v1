@@ -13,6 +13,10 @@
           "strict": true
         }
       },
+      "angularCompilerOptions": {
+        "enableIvy": true,
+        "skipTemplateCodegen": true
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",

@@ -1,7 +1,9 @@
 import { Location } from '@angular/common';
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription } from 'rxjs';
+import { HelperService } from 'src/app/services/helper.service';
 import { RecipeService } from 'src/app/services/recipe.service';
 
 @Component({
@@ -16,12 +18,15 @@ export class HomeComponent implements OnInit, OnChanges {
   defaultCategory: string = 'pork';
   queryParamsSubscription!: Subscription;
 newRecipes:any;
+user:any;
 
   constructor(
     private recipeService: RecipeService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private helperService:HelperService,
+    private toastr:ToastrService
   ) {
 
     //   this.queryParamsSubscription = this.activatedRoute.queryParams.subscribe((params) => {
@@ -60,6 +65,9 @@ newRecipes:any;
   }
 
   ngOnInit(): void {
+    this.user=this.helperService.userObj;
+    console.log(this.user)
+
     this.loadCategories();
 
     // this.activatedRoute.queryParamMap.subscribe((queryParams) => {
@@ -124,7 +132,26 @@ newRecipes:any;
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('categories from home ngOnChanges', this.categories)
+  }
 
+  addTpFav(mealId:string){
+    console.log('useridd',this.user.user.id)
+    console.log('add to fav',mealId);
+    this.recipeService.addtoFavourites(this.user.user.id,mealId).subscribe((resData)=>{
+      this.toastr.success(
+        `Successfully Added to Favourites !`,
+        'Adding Successful'
+      )
+      location.replace("/favourite-meals");
+    },error=>{
+      console.log(error)
+      if (error.statusText == 'Unknown Error') {
+        this.toastr.error('Unknown Server Error occured', 'Adding Failed');
+      } else {
+        this.toastr.error(error.error.message, 'Adding To Favourites failed');
+
+      }
+    })
   }
 
 }

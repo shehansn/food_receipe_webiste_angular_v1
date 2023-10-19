@@ -4,7 +4,7 @@ const router = express.Router();
 const axios = require('axios');
 const { isAuth } = require('../helpers/auth');
 const { Recipe } = require('../models/Recipe');
-const https=require('https');
+const https = require('https');
 
 router.get(`/`, async (req, res) => {
 
@@ -35,7 +35,7 @@ router.get(`/categories`, async (req, res) => {
     console.log('cat')
     axios.get('https://www.themealdb.com/api/json/v1/1/categories.php')
         .then((result) => {
-            console.log('result',result);
+            console.log('result', result);
             const numberOfCategories = result.data.categories.length;
             return res.status(200).json({
                 message: 'Categories Found',
@@ -97,6 +97,12 @@ router.get(`/meals`, async (req, res) => {
 
 //need to send userID and recipeId query params userId is optional to send
 router.post(`/addToFavorites`, isAuth, async (req, res) => {
+    let userId2 = req.user.id;
+    let recipeId2 = req.query.recipeId
+    console.log('user id -------------', userId2);
+    console.log('add to fa v body -------------', req.body);
+    console.log('add to fa recipeId2 -------------', recipeId2);
+
     let recipeId = req.query.recipeId;
     let userId = req.query.userId;
     //let userId=req.user.id;
@@ -105,17 +111,18 @@ router.post(`/addToFavorites`, isAuth, async (req, res) => {
     console.log(userId)
     console.log(recipeId)
 
-    User.findById(userId).then((user) => {
+    User.findById(userId2).then((user) => {
         console.log('user', user)
 
         let receipesIds = user.favoriteReceipes.map((r) => r.toString());
-        if (receipesIds.indexOf(recipeId) !== -1) {
+        if (receipesIds.indexOf(recipeId2) !== -1) {
             return res.status(400).json({
                 message: 'You already have this Meal in your favorites list'
             });
         }
 
-        user.favoriteReceipes.push(recipeId);
+
+        user.favoriteReceipes.push(recipeId2);
         user.save();
 
         return res.status(200).json({
@@ -126,6 +133,7 @@ router.post(`/addToFavorites`, isAuth, async (req, res) => {
             message: 'Something went wrong!!! cannot find user.'
         });
     })
+
 });
 
 //need to send data with the body, recipe data with the body --userId with query params(optional)
@@ -204,13 +212,26 @@ router.get(`/favoriteRecipes`, async (req, res) => {
     let userId = req.query.userId;
     console.log(userId)
     User.findById(userId).then((user) => {
+        //console.log(user?.favoriteReceipes)
 
-        let receipesIds = user.favoriteReceipes.map((b) => b.toString());
+        if (user?.favoriteReceipes!=null) {
+            console.log(user.favoriteReceipes)
+            let receipesIds = user.favoriteReceipes.map((b) => b.toString());
 
-        return res.status(200).json({
-            message: 'Favourite recipes',
-            data: receipesIds
-        });
+            return res.status(200).json({
+                message: 'Favourite recipes',
+                data: receipesIds
+            });
+        }else{
+            console.log('no fav recipes')
+            //let receipesIds = user.favoriteReceipes.map((b) => b.toString());
+
+            return res.status(400).json({
+                message: 'No favourite Recipes',
+                data: ''
+            });
+        }
+
     });
 
 });

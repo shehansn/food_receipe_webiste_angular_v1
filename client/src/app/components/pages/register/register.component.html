@@ -1,1 +1,108 @@
-<p>register works!</p>
+<mat-card>
+  <img matCardImage src="../../../../assets//icons/logo.png" style="height: 50px; width: 100px; margin-top: 10px;">
+
+  <mat-card-header>
+    <mat-card-title style="font-weight: 600;">Register</mat-card-title>
+    <mat-card-subtitle>Register For Recipe Website</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form (ngSubmit)="register()" name="registerForm" [formGroup]="registerForm">
+      <div class="container">
+        <div class="box">
+
+          <div class="email-input">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Full Name </mat-label>
+              <input matInput value="" formControlName="firstName" type="text" placeholder="First Name" required>
+              <mat-error style="margin-top: 5px;" *ngIf="isSubmited && registerForm.controls.firstName.errors?.required ">
+                Name Is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="email-input">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Email Address </mat-label>
+              <input matInput value="" formControlName="email" type="email" placeholder="email@example.com" required>
+              <mat-error style="margin-top: 5px;" *ngIf="isSubmited && registerForm.controls.email.errors?.required ">
+                Email Is required
+              </mat-error>
+              <mat-error style="margin-top: 2px;" *ngIf="isSubmited && registerForm.controls.email.status=='INVALID' ">
+                <span> Email Is Not Valid</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="email-input">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Password </mat-label>
+              <input matInput value="" formControlName="password" type="password" placeholder="********">
+              <mat-error style="margin-top: 5px;" *ngIf="isSubmited && registerForm.controls.password.errors ">
+                Password Is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <div class="box">
+
+          <div class="email-input">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Last Name </mat-label>
+              <input matInput value="" formControlName="lastName" type="text" placeholder="Last Name" required>
+              <mat-error style="margin-top: 5px;" *ngIf="isSubmited && registerForm.controls.lastName.errors?.required ">
+                Last Name Is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="email-input">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Phone Number </mat-label>
+              <input matInput value="" formControlName="phoneNumber" type="text" placeholder="+94 7xx xxx xxx" required>
+              <mat-error style="margin-top: 5px;" *ngIf="isSubmited && registerForm.controls.phoneNumber.errors?.required ">
+                Phone Number Is required
+              </mat-error>
+
+            </mat-form-field>
+          </div>
+
+          <div class="email-input">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Confirm Password </mat-label>
+              <input matInput value="" formControlName="confirmPassword" type="password" placeholder="********">
+              <mat-error style="margin-top: 5px;" *ngIf="isSubmited && registerForm.controls.confirmPassword.errors?.required ">
+                Confirm Password Is required
+              </mat-error>
+              <mat-error style="margin-top: 5px;" *ngIf="isSubmited && registerForm.controls.confirmPassword.errors?.notMatch ">
+                The Password Does Not Match
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+        </div>
+      </div>
+
+
+
+      <button mat-raised-button style="margin-top: 20px;" type="submit" color="accent">Create Account</button>
+
+      <mat-error *ngIf="isSubmited && isErrors" style="margin-top: 20px;">
+        Please Fill All the fields
+      </mat-error>
+
+
+    </form>
+  </mat-card-content>
+
+  <span class="acc-create" style="margin-top: 20px; margin-bottom: 10px;">Already have an account? <span
+      routerLink="/user/login" (click)="navigateToSignup()" style="color: crimson; cursor: pointer;">Login In</span> </span>
+
+  <!-- <mat-card-actions align="start">
+        <button mat-button (click)="onAction1">Action1</button>
+
+    </mat-card-actions> -->
+  <mat-card-footer>
+  </mat-card-footer>
+</mat-card>

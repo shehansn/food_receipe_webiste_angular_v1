@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { HelperService } from 'src/app/services/helper.service';
 import { RecipeService } from 'src/app/services/recipe.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -23,14 +24,18 @@ export class FavouriteMealsComponent implements OnInit {
   userId: string = '652a348b8b1648b2f579c757';
   userFav: any[] = [];
   selectedMeals: any[] = [];
+user:any;
 
   constructor(
     private recipeService: RecipeService,
     private userService: UserService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private helperService:HelperService
   ) { }
 
   ngOnInit(): void {
+    this.user=this.helperService.userObj;
+    console.log(this.user)
 
     this.loadCategories();
 
@@ -47,15 +52,21 @@ export class FavouriteMealsComponent implements OnInit {
     //   }
     // })
 
+//alert(this.user)
   }
-  loadFavRecipes() {
-    this.userService.getAllFavRecipes(this.userId).subscribe((res) => {
-      console.log('user fav-------------------------------', res);
-      this.userFav.push(res.data)
-      return res.data;
-    })
+ async loadFavRecipes() {
+    if(this.user){
+      this.userId=this.user.user.id;
+      alert(this.userId)
+      this.userService.getAllFavRecipes(this.userId).subscribe((res) => {
+        console.log('user fav-------------------------------', res);
+        this.userFav.push(res.data)
+        return res.data;
+      })
 
-    console.log('user fav-@@@@@@@@@@@@@@@@@@@@@@@@@@--', this.userFav);
+      console.log('user fav-@@@@@@@@@@@@@@@@@@@@@@@@@@--', this.userFav);
+    }
+
 
   }
 
@@ -121,7 +132,7 @@ export class FavouriteMealsComponent implements OnInit {
       console.log('22222222222222222', recipe.idMeal)
       console.log('33333333333333333', this.userFav[0])
 
-      for (let i = 0; i < this.userFav[0].length; i++) {
+      for (let i = 0; i < this.userFav[0]?.length; i++) {
         const id: string = this.userFav[0][i];
         if (recipe.idMeal == this.userFav[0][i]) {
           console.log(`Value at index 222222222222 ${i}: ${id}`, recipe);

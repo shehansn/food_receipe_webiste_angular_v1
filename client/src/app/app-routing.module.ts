@@ -4,6 +4,7 @@ import { FavouriteMealsComponent } from './components/pages/favourite-meals/favo
 import { HomeComponent } from './components/pages/home/home.component';
 import { LoginComponent } from './components/pages/login/login.component';
 import { RegisterComponent } from './components/pages/register/register.component';
+import { AuthGuard } from './shared/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -24,7 +25,8 @@ const routes: Routes = [
   },
   {
     path: 'favourite-meals',
-    component: FavouriteMealsComponent
+    component: FavouriteMealsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: '',

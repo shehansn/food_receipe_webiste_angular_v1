@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 import { ServerRes } from '../shared/models/ServerRes.model';
 import { User } from '../shared/models/user.model';
 
-const APIURL = 'http://localhost:8000/api/v1/user';
+const APIURL = 'http://localhost:9000/api/v1/user';
 const registerUrl = APIURL + '/register';
 const loginUrl = APIURL + '/login';
 
@@ -43,7 +43,7 @@ export class UserService {
             `Welcome to the Foods Recipe Website`,
             'Register Successful'
           )
-          location.replace("/home");
+          location.replace("/user/login");
         },
         error: (errorResponse) => {
           if (errorResponse.statusText == 'Unknown Error') {

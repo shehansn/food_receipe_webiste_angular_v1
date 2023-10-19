@@ -3,7 +3,7 @@
 
     <a href="#" class="logo">
 
-      <img src="../../../../assets/icons/logo.png" routerLink="/" alt="logo" style="width: 150px;height: 60px; margin-left: 0; ">
+      <img src="../../../../assets/icons/logo.png" routerLink="/" alt="logo" style="width: 110px;height: 40px; margin-left: 0; ">
 
     </a>
 
@@ -13,8 +13,12 @@
     </div>
 
     <div class="icons">
-        <a class="logout">
-          <i class="fa fa-sign-out fa-2xl" ></i>
+        <a class="logout" *ngIf="isUserLogged()" (click)="logout()" >
+          <i class="fa fa-sign-out fa-xl" ></i> logout
+        </a>
+        <a class="logout"  *ngIf="!isUserLogged()">
+          <i class="fa fa-sign-in fa-xl" routerLink="/user/login"></i>
+          login
         </a>
     </div>
 
