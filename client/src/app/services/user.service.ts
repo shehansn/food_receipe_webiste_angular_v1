@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -86,8 +86,7 @@ export class UserService {
   }
 
   getAllFavRecipes(userId:string):Observable<ServerRes<any>> {
-    const params = new HttpParams().set('userId', userId);
-    return this.http.get<ServerRes<any>>(environment.FAV_RECIPES_URL,{params});
+    return this.http.get<ServerRes<any>>(environment.FAV_RECIPES_URL);
   }
 
 

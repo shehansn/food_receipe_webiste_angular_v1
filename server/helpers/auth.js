@@ -8,6 +8,7 @@ function verifyToken(req) {
     return new Promise((resolve, reject) => {
         JWT.verify(TOKEN, SECRET, (err, decoded) => {
             if (err) {
+                console.log('token decode err',err)
                 reject();
             }
 
