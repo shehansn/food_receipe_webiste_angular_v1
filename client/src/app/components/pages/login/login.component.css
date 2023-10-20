@@ -3,12 +3,14 @@ mat-card {
   margin: 2em auto;
   text-align: center;
   max-height: 600px;
+
 }
 mat-card-header{
   text-align: center;
   align-items: center;
   justify-content: center;
 }
+
 .header {
   text-align: center;
 }
@@ -29,6 +31,7 @@ mat-card-header{
 float: right;
 padding-right: 60px;
 }
+
 .acc-create{
   font-size: small;
 }

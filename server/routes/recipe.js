@@ -6,9 +6,9 @@ const { isAuth } = require('../helpers/auth');
 const { Recipe } = require('../models/Recipe');
 const https = require('https');
 
+//get meal where letter equal c
 router.get(`/`, async (req, res) => {
 
-    // axios.get('https://www.themealdb.com/api/json/v1/1/search.php?f=a&f=b&f=c')
     axios.get('https://www.themealdb.com/api/json/v1/1/search.php?f=c')
         .then((result) => {
             const numberOfMeals = result.data.meals.length;
@@ -28,14 +28,11 @@ router.get(`/`, async (req, res) => {
 
 });
 
-
+//get all categories
 router.get(`/categories`, async (req, res) => {
 
-    // axios.get('https://www.themealdb.com/api/json/v1/1/search.php?f=a&f=b&f=c')
-    console.log('cat')
     axios.get('https://www.themealdb.com/api/json/v1/1/categories.php')
         .then((result) => {
-            console.log('result', result);
             const numberOfCategories = result.data.categories.length;
             return res.status(200).json({
                 message: 'Categories Found',
@@ -53,19 +50,8 @@ router.get(`/categories`, async (req, res) => {
 
 });
 
-
+//get all meals//need to send category with the query params example-meals/?c=Beef
 router.get(`/meals`, async (req, res) => {
-    // let params = req.query;
-
-    // if (params.query || typeof params.query === 'string') {
-    //     let query = JSON.parse(params.query);
-    //     searchParams.query = { $text: { $search: query['c'], $language: 'en' } };
-    // }
-    // let searchParams = {
-    //     query: {},
-    //     skip: null,
-    // };
-
     let category = req.query.c;
 
     console.log(category)
@@ -89,38 +75,55 @@ router.get(`/meals`, async (req, res) => {
 });
 
 
+//get meal by id
+router.get(`/meals/:idMeal`, async (req, res) => {
+    const idMeal = req.params.idMeal;
+
+    axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=` + idMeal)
+        .then((result) => {
+
+            return res.status(200).json({
+                message: 'Meals Found',
+                data: result.data,
+
+            });
+
+        }).catch((err) => {
+            return res.status(400).json({
+                message: `Error: ` + err.message,
+                data: '',
+            });
+
+        });
+
+});
+
 // router.get(`/`, async (req, res) => {
 //     res.status(200).json({ message: 'recipe router!' });
 
 // });
 
 
-//need to send userID and recipeId query params userId is optional to send
+//need to send  recipeId as query params userId is got from auth token
+//http://localhost:9000/api/v1/recipe/addToFavourites?recipeId=52874
+//send authorization token in the headers as Bearer token
 router.post(`/addToFavorites`, isAuth, async (req, res) => {
+
     let userId2 = req.user.id;
     let recipeId2 = req.query.recipeId
-    console.log('user id -------------', userId2);
-    console.log('add to fa v body -------------', req.body);
-    console.log('add to fa recipeId2 -------------', recipeId2);
 
-    let recipeId = req.query.recipeId;
-    let userId = req.query.userId;
-    //let userId=req.user.id;
-    //let userId = '652a3528784f92e2b6ea47bd';
-
-    console.log(userId)
-    console.log(recipeId)
+    console.log('userId 2 add fv ', userId2);
+    console.log('recipeId 2 add fv', recipeId2);
 
     User.findById(userId2).then((user) => {
-        console.log('user', user)
 
         let receipesIds = user.favoriteReceipes.map((r) => r.toString());
         if (receipesIds.indexOf(recipeId2) !== -1) {
+
             return res.status(400).json({
                 message: 'You already have this Meal in your favorites list'
             });
         }
-
 
         user.favoriteReceipes.push(recipeId2);
         user.save();
@@ -136,13 +139,99 @@ router.post(`/addToFavorites`, isAuth, async (req, res) => {
 
 });
 
-//need to send data with the body, recipe data with the body --userId with query params(optional)
+//need to send recipeId as query params userId is got from auth
+// http://localhost:9000/api/v1/recipe/removeFromFavorites?recipeId=52776
+//send authorization token in the headers as Bearer token
+router.post(`/removeFromFavorites`, isAuth, async (req, res) => {
+    let userId2 = req.user.id;
+    let recipeId2 = req.query.recipeId
+
+    console.log('userId 2 remove fv', userId2);
+    console.log('recipeId remove fv', recipeId2);
+
+    User.findById(userId2).then((user) => {
+    
+        let receipesIds = user.favoriteReceipes.map((r) => r.toString());
+        if (receipesIds.indexOf(recipeId2) !== -1) {
+            
+            const index = user.favoriteReceipes.indexOf(recipeId2);
+
+            if (index !== -1) {
+                user.favoriteReceipes.splice(index, 1);
+                user.save();
+
+                return res.status(200).json({
+                    message: 'Successfully removed the Meal from your favorites list.',
+                });
+            }else{
+                return res.status(400).json({
+                    message: 'Meal Not Found in favourite meals list'
+    
+                });
+            }
+
+        } else {
+            return res.status(400).json({
+                message: 'Not an favourite meal'
+
+            });
+        }
+
+    }).catch((err) => {
+        return res.status(400).json({
+            message: 'Something went wrong!!! cannot find user.',
+            data: err.message
+        });
+    })
+
+});
+
+
+router.get(`/favoriteRecipes`,isAuth, async (req, res) => {
+    let userId = req.user.id;
+
+    User.findById(userId).then((user) => {
+
+        if (user?.favoriteReceipes != null) {
+            console.log(user.favoriteReceipes)
+            let receipesIds = user.favoriteReceipes.map((b) => b.toString());
+
+            return res.status(200).json({
+                message: 'Favourite recipes',
+                data: receipesIds
+            });
+        } else {
+            return res.status(400).json({
+                message: 'No favourite Recipes',
+                data: ''
+            });
+        }
+
+    });
+
+});
+
+router.get(`/favoriteRecipesCount`, isAuth, async (req, res) => {
+    let userId = req.user.id;
+
+    User.findById(userId).then((user) => {
+
+        let receipesIds = user.favoriteReceipes.map((b) => b.toString());
+
+        return res.status(200).json({
+            message: '',
+            data: receipesIds.length
+        });
+    });
+
+});
+
+//need to send data with the body, recipe data with the body userid get from isAuth
 router.post(`/addToFavoritesSave`, isAuth, async (req, res) => {
     let recipeId = req.body.idMeal;
-    //let userId = req.query.userId;
-    //let userId=req.user.id;
-    let userId = '652a3528784f92e2b6ea47bd';
+    let userId = req.user.id;
     let recipe = req.body;
+    
     console.log('recipe', req.body);
     console.log('req user id', req.user.id);
 
@@ -207,49 +296,6 @@ router.post(`/addToFavoritesSave`, isAuth, async (req, res) => {
 
 });
 
-router.get(`/favoriteRecipes`, async (req, res) => {
-    //let userId = req.user.id;
-    let userId = req.query.userId;
-    console.log(userId)
-    User.findById(userId).then((user) => {
-        //console.log(user?.favoriteReceipes)
 
-        if (user?.favoriteReceipes!=null) {
-            console.log(user.favoriteReceipes)
-            let receipesIds = user.favoriteReceipes.map((b) => b.toString());
-
-            return res.status(200).json({
-                message: 'Favourite recipes',
-                data: receipesIds
-            });
-        }else{
-            console.log('no fav recipes')
-            //let receipesIds = user.favoriteReceipes.map((b) => b.toString());
-
-            return res.status(400).json({
-                message: 'No favourite Recipes',
-                data: ''
-            });
-        }
-
-    });
-
-});
-
-router.get(`/favoriteRecipesCount`, isAuth, async (req, res) => {
-    //let userId = req.user.id;
-    let userId = req.query.userId;
-    console.log(userId)
-    User.findById(userId).then((user) => {
-
-        let receipesIds = user.favoriteReceipes.map((b) => b.toString());
-
-        return res.status(200).json({
-            message: '',
-            data: receipesIds.length
-        });
-    });
-
-});
 
 module.exports = router;

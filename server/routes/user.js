@@ -6,8 +6,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const VALIDATOR = require('validator');
 
-const { isAuth } = require('../helpers/auth');
-
 SECRET = process.env.SECRET;
 
 function generateToken(userInfo) {
@@ -26,7 +24,6 @@ function generateToken(userInfo) {
 router.post(`/register`, async (req, res) => {
 
     let validationResult = validateRegisterForm(req.body);
-
 
     if (!validationResult.success) {
         return res.status(400).send({
@@ -51,13 +48,6 @@ router.post(`/register`, async (req, res) => {
             avatar: '/assets/images/avatar.png',
             mobileNumber:req.body.mobileNumber
         })
-        // User.create(user).then((newUser)=>{
-        //     let token = generateToken(user);
-        //     res.status(400).send({
-        //         message: 'else',
-        //         data:token,
-        //     });
-        // })
 
         User.create(user).then((newUser) => {
             let token = generateToken(newUser);
@@ -109,7 +99,6 @@ router.post(`/login`, async (req, res) => {
             message: 'The user not found!',
             errors: validationResult.errors
         });
-        //return res.status(400).send('The user not found');
     }
 
     if (user && bcrypt.compareSync(req.body.password, user.passwordHash)) {

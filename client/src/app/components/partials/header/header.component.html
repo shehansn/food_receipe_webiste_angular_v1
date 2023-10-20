@@ -14,11 +14,11 @@
 
     <div class="icons">
         <a class="logout" *ngIf="isUserLogged()" (click)="logout()" >
-          <i class="fa fa-sign-out fa-xl" ></i> logout
+          <i class="fa fa-sign-out fa-xl" ></i>
         </a>
         <a class="logout"  *ngIf="!isUserLogged()">
           <i class="fa fa-sign-in fa-xl" routerLink="/user/login"></i>
-          login
+
         </a>
     </div>
 
