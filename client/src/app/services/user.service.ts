@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 import { ServerRes } from '../shared/models/ServerRes.model';
 import { User } from '../shared/models/user.model';
 
-const APIURL = 'http://localhost:9000/api/v1/user';
+const APIURL=environment.USER_API_URL;
 const registerUrl = APIURL + '/register';
 const loginUrl = APIURL + '/login';
 
@@ -69,7 +69,7 @@ export class UserService {
             `Welcome to Foods Recipe Website !`,
             'Login Successful'
           )
-          location.replace("/home");
+          location.replace("/");
         },
         error: (errorResponse) => {
           console.log(errorResponse)
