@@ -69,7 +69,7 @@ export class UserService {
             `Welcome to Foods Recipe Website !`,
             'Login Successful'
           )
-          location.replace("/home");
+          location.replace("/");
         },
         error: (errorResponse) => {
           console.log(errorResponse)

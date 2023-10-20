@@ -191,7 +191,8 @@ export class FavouriteMealsComponent implements OnInit {
           `Successfully Removed from Favourites !`,
           'Removing Successful'
         )
-        this.router.navigateByUrl('/favourite-meals');
+        location.replace("/");
+        //this.router.navigateByUrl('/favourite-meals');
       },error=>{
         console.log(error)
         if (error.statusText == 'Unknown Error') {

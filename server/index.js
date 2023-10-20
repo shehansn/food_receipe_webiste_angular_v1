@@ -39,7 +39,8 @@ mongoose
     .catch((err) => {
     console.log(err);
     });
-
+//frontend
+app.use(express.static("dist/client"));
 //Server
 app.listen(9000, () => {
     console.log("server is running http://localhost:9000");

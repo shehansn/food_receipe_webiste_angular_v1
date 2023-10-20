@@ -1,18 +1,21 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-
+// const API_URL="http://localhost:9000/api/v1/recipe";
+// const CATEGORIES_URL="http://localhost:9000/api/v1/recipe/categories";
+// const MEALS_URL="http://localhost:9000/api/v1/recipe/meals";
 const API_SERVER_URL="http://localhost:9000";
+
 export const environment = {
   production: false,
-  API_URL:`${{API_SERVER_URL}}/api/v1/recipe`,
-  CATEGORIES_URL:`${{API_SERVER_URL}}/api/v1/recipe/categories`,
-  MEALS_URL:`${{API_SERVER_URL}}/api/v1/recipe/meals`,
-  FAV_RECIPES_URL:`${{API_SERVER_URL}}/api/v1/recipe/favoriteRecipes`,
-  ADD_FAV_RECIPES_URL:`${{API_SERVER_URL}}/api/v1/recipe/addToFavorites`,
-  REMOVE_FAV_RECIPES_URL:`${{API_SERVER_URL}}/api/v1/recipe/removeFromFavorites`,
-  GET_RECIPY_BY_ID_URL:`${{API_SERVER_URL}}/api/v1/recipe/meals/`,
-  USER_API_URL : `${{API_SERVER_URL}}/api/v1/user`
+  API_URL:`http://localhost:9000/api/v1/recipe`,
+  CATEGORIES_URL:`http://localhost:9000/api/v1/recipe/categories`,
+  MEALS_URL:`http://localhost:9000/api/v1/recipe/meals`,
+  FAV_RECIPES_URL:`http://localhost:9000/api/v1/recipe/favoriteRecipes`,
+  ADD_FAV_RECIPES_URL:`http://localhost:9000/api/v1/recipe/addToFavorites`,
+  REMOVE_FAV_RECIPES_URL:`http://localhost:9000/api/v1/recipe/removeFromFavorites`,
+  GET_RECIPY_BY_ID_URL:`http://localhost:9000/api/v1/recipe/meals/`,
+  USER_API_URL : `http://localhost:9000/api/v1/user`
 
 };
 

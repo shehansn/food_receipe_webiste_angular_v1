@@ -144,7 +144,8 @@ user:any;
           `Successfully Added to Favourites !`,
           'Adding Successful'
         )
-        location.replace("/favourite-meals");
+        location.replace("/")
+        // location.replace("/favourite-meals");
       },error=>{
         console.log(error)
         if (error.statusText == 'Unknown Error') {
