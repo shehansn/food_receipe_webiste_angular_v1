@@ -156,7 +156,6 @@ export class FavouriteMealsComponent implements OnInit {
       // }
 
 
-
     }
 
     // var selectedMeals = this.recipes.filter(meal => this.userFav.includes(meal.idMeal));
@@ -187,7 +186,7 @@ export class FavouriteMealsComponent implements OnInit {
     console.log('add to fav',mealId);
     const userID=this.user.user.id;
     if(userID){
-      this.recipeService.removeFromFavourites(this.user.user.id,mealId).subscribe((resData)=>{
+      this.recipeService.removeFromFavourites(mealId).subscribe((resData)=>{
         this.toastr.warning(
           `Successfully Removed from Favourites !`,
           'Removing Successful'

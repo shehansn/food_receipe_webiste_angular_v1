@@ -139,7 +139,7 @@ user:any;
     console.log('add to fav',mealId);
     const userID=this.user.user.id;
     if(userID){
-      this.recipeService.addtoFavourites(this.user.user.id,mealId).subscribe((resData)=>{
+      this.recipeService.addtoFavourites(mealId).subscribe((resData)=>{
         this.toastr.success(
           `Successfully Added to Favourites !`,
           'Adding Successful'
