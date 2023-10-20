@@ -1,0 +1,37 @@
+
+<div  class="container">
+  <img [src]="recipe.strMealThumb" [alt]="recipe.strMeal" />
+
+  <div class="details">
+    <div class="header">
+      <span class="name">
+        {{recipe.strMeal}}
+      </span>
+
+      <span class="favorite "> <i class="fa-regular fa-heart "></i> </span>
+    </div>
+
+    <div class="category">
+      <span >
+        {{recipe.strCategory}}
+      </span>
+    </div>
+
+    <div class="ingrediants">
+      Ingrediants:{{' '}}
+      <span>
+        {{recipe.strIngredient1}} <strong>{{recipe.strIngredient2}}</strong>
+        {{recipe.strIngredient3}} <strong>{{recipe.strIngredient4}}</strong>
+        {{recipe.strIngredient5}}
+      </span>
+    </div>
+
+    <div class="area">
+      <span>
+        {{ recipe.strArea }}
+      </span>
+    </div>
+
+    <button (click)="back()">Back</button>
+  </div>
+</div>
